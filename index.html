@@ -5,11 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine Invite</title>
 
-<!-- Poppins font for romantic style -->
+<!-- Poppins font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* Full-page romantic background */
 body {
   margin: 0;
   padding: 0;
@@ -19,9 +18,8 @@ body {
   overflow: hidden;
 }
 
-/* Semi-transparent romantic overlay */
 .overlay {
-  background: rgba(255, 240, 230, 0.85); /* warm light pinkish */
+  background: rgba(255, 240, 230, 0.85);
   max-width: 650px;
   margin: 60px auto;
   padding: 40px 30px;
@@ -30,9 +28,8 @@ body {
   box-shadow: 0 0 30px rgba(0,0,0,0.3);
 }
 
-/* Main heading */
 h1 {
-  color: #8B2D2D; /* deep red romantic tone */
+  color: #8B2D2D;
   font-size: 36px;
   margin-bottom: 30px;
   font-weight: 700;
@@ -40,7 +37,6 @@ h1 {
   text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
 }
 
-/* Buttons */
 .btn {
   background-color: #8B2D2D;
   color: white;
@@ -64,6 +60,10 @@ h1 {
   height: 120px;
 }
 
+#noBtn {
+  position: absolute;
+}
+
 #result {
   margin-top: 35px;
   font-size: 20px;
@@ -71,7 +71,6 @@ h1 {
   line-height: 1.6;
 }
 
-/* Floating red hearts */
 .heart {
   position: fixed;
   bottom: -20px;
@@ -87,7 +86,6 @@ h1 {
   }
 }
 
-/* Mobile-friendly adjustments */
 @media (max-width: 500px) {
   .overlay {
     width: 90%;
@@ -110,14 +108,32 @@ h1 {
 
   <div id="buttons">
     <button class="btn" onclick="answerYes()">YES</button>
-    <button class="btn" onclick="answerNo()">NO</button>
+    <button class="btn" id="noBtn">NO</button>
   </div>
 
   <div id="result"></div>
 </div>
 
 <script>
-/* Floating hearts animation */
+const noBtn = document.getElementById("noBtn");
+
+/* Runaway NO button */
+function moveButton() {
+  const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+  const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
+}
+
+/* Trigger runaway on hover or touch */
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
+
+/* Continuous floating hearts on page load */
 function startHearts() {
   setInterval(() => {
     const heart = document.createElement("div");
@@ -131,6 +147,9 @@ function startHearts() {
   }, 300);
 }
 
+/* Start hearts automatically */
+window.onload = startHearts;
+
 /* YES button click */
 function answerYes() {
   document.getElementById("result").innerHTML = `
@@ -138,12 +157,11 @@ function answerYes() {
     <p>
     Maybe wear something cozy and comfy for the cold weather — no need to overdress,
     just something you’ll feel good in and that’s nice for photos too.
-    Our first stop is a nice location for a little photo op plus appetizers and cocktails,
-    then we’ll head to a more simple and casual place for the main meal
+    Our first stop has a little photo op plus appetizers and cocktails,
+    then we’ll head to a more casual place for the main meal
     (Mediterranean — hoping it’s a good one 😄).
     </p>
   `;
-  startHearts();
 }
 
 /* NO button click */
