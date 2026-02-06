@@ -1,180 +1,608 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Invite</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Valentine Invite</title>
+        <meta name="description" content="A cute little Valentine invite." />
+        <style>
+            :root {
+                --bg1: #0b1020;
+                --bg2: #1a0b1b;
+                --card: rgba(255, 255, 255, 0.08);
+                --cardBorder: rgba(255, 255, 255, 0.16);
+                --text: rgba(255, 255, 255, 0.92);
+                --muted: rgba(255, 255, 255, 0.72);
+                --shadow: rgba(0, 0, 0, 0.35);
+                --yes: #22c55e;
+                --yesHover: #16a34a;
+                --no: rgba(255, 255, 255, 0.12);
+                --noHover: rgba(255, 255, 255, 0.18);
+                --focus: rgba(255, 255, 255, 0.35);
+            }
 
-<!-- Elegant romantic font -->
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+            * {
+                box-sizing: border-box;
+            }
 
-<style>
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  font-family: 'Dancing Script', cursive;
-  overflow: hidden;
-}
+            html,
+            body {
+                height: 100%;
+            }
 
-body {
-  background: url('tagaytay.jpg') center center no-repeat;
-  background-size: cover;
-  background-attachment: scroll; /* static background */
-}
+            body {
+                margin: 0;
+                font-family:
+                    ui-sans-serif,
+                    system-ui,
+                    -apple-system,
+                    Segoe UI,
+                    Roboto,
+                    Helvetica,
+                    Arial,
+                    "Apple Color Emoji",
+                    "Segoe UI Emoji";
+                color: var(--text);
+                background:
+                    radial-gradient(1200px 800px at 20% 20%, rgba(255, 80, 160, 0.14), transparent 60%),
+                    radial-gradient(900px 600px at 80% 30%, rgba(120, 80, 255, 0.14), transparent 60%),
+                    linear-gradient(160deg, var(--bg1), var(--bg2));
+                overflow-x: hidden;
+            }
 
-/* Overlay in center */
-.overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255, 240, 230, 0.85);
-  border-radius: 25px;
-  text-align: center;
-  padding: 40px 30px;
-  max-width: 600px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.3);
-}
+            .wrap {
+                min-height: 100%;
+                display: grid;
+                place-items: center;
+                padding: 28px 16px;
+                position: relative;
+            }
 
-h1 {
-  color: #8B2D2D;
-  font-size: 36px;
-  margin-bottom: 30px;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-}
+            .card {
+                width: min(720px, 100%);
+                border: 1px solid var(--cardBorder);
+                background: var(--card);
+                backdrop-filter: blur(10px);
+                box-shadow:
+                    0 20px 60px var(--shadow),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+                border-radius: 20px;
+                padding: 22px;
+                position: relative;
+                overflow: hidden;
+            }
 
-/* Buttons */
-.btn {
-  background-color: #8B2D2D;
-  color: white;
-  border: none;
-  padding: 16px 32px;
-  margin: 12px;
-  font-size: 20px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 700;
-  transition: transform 0.25s, background-color 0.25s;
-}
+            .header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                margin-bottom: 18px;
+            }
 
-.btn:hover {
-  transform: scale(1.05);
-  background-color: #a33b3b;
-}
+            .badge {
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.72);
+                border: 1px solid rgba(255, 255, 255, 0.16);
+                background: rgba(255, 255, 255, 0.06);
+                border-radius: 999px;
+                padding: 8px 10px;
+            }
 
-#buttons {
-  position: relative;
-  height: 120px;
-}
+            .heart {
+                width: 22px;
+                height: 22px;
+                display: inline-block;
+                position: relative;
+                transform: rotate(-45deg);
+                margin-right: 6px;
+                opacity: 0.9;
+            }
 
-#noBtn {
-  position: absolute;
-}
+            .heart::before,
+            .heart::after {
+                content: "";
+                position: absolute;
+                width: 12px;
+                height: 18px;
+                background: rgba(255, 255, 255, 0.85);
+                border-radius: 12px 12px 0 0;
+            }
 
-#result {
-  margin-top: 30px;
-  font-size: 22px;
-  color: #8B2D2D;
-  line-height: 1.6;
-}
+            .heart::before {
+                left: 10px;
+                transform: rotate(90deg);
+                transform-origin: 0 100%;
+            }
 
-/* Floating hearts */
-.heart {
-  position: fixed;
-  bottom: -20px;
-  font-size: 24px;
-  color: #FF4B5C;
-  animation: floatUp linear forwards;
-}
+            .heart::after {
+                top: 10px;
+                left: 0;
+            }
 
-@keyframes floatUp {
-  to {
-    transform: translateY(-110vh);
-    opacity: 0;
-  }
-}
+            h1 {
+                font-size: clamp(22px, 3.2vw, 30px);
+                line-height: 1.15;
+                margin: 8px 0 10px;
+            }
 
-/* Responsive adjustments */
-@media (max-width: 500px) {
-  .overlay {
-    width: 90%;
-    padding: 25px 15px;
-  }
-  h1 {
-    font-size: 28px;
-  }
-  .btn {
-    font-size: 16px;
-    padding: 12px 20px;
-  }
-}
-</style>
-</head>
-<body>
+            p {
+                margin: 0;
+                color: var(--muted);
+                line-height: 1.6;
+                font-size: 16px;
+            }
 
-<div class="overlay">
-  <h1>Are you free on February 14th?</h1>
-  <div id="buttons">
-    <button class="btn" onclick="answerYes()">YES</button>
-    <button class="btn" id="noBtn">NO</button>
-  </div>
-  <div id="result"></div>
-</div>
+            .content {
+                display: grid;
+                gap: 14px;
+                margin-top: 6px;
+            }
 
-<script>
-const noBtn = document.getElementById("noBtn");
+            .stage {
+                margin-top: 8px;
+                position: relative;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 16px;
+                padding: 16px;
+                background: rgba(0, 0, 0, 0.12);
+                overflow: hidden;
+            }
 
-/* Continuous moving NO button */
-function moveNoButton() {
-  const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-  const maxY = window.innerHeight - noBtn.offsetHeight - 20;
-  noBtn.style.left = Math.random() * maxX + "px";
-  noBtn.style.top = Math.random() * maxY + "px";
-}
+            .question {
+                font-size: 18px;
+                color: rgba(255, 255, 255, 0.92);
+                margin: 0 0 12px;
+            }
 
-/* Move NO button every 500ms */
-setInterval(moveNoButton, 500);
+            .actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                align-items: center;
+            }
 
-/* Floating hearts continuously */
-function startHearts() {
-  setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
-    heart.style.fontSize = (18 + Math.random() * 18) + "px";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
-  }, 300);
-}
+            .btn {
+                appearance: none;
+                border: 1px solid rgba(255, 255, 255, 0.16);
+                border-radius: 12px;
+                padding: 12px 14px;
+                font-weight: 650;
+                font-size: 16px;
+                color: rgba(255, 255, 255, 0.92);
+                cursor: pointer;
+                background: rgba(255, 255, 255, 0.08);
+                transition:
+                    transform 0.12s ease,
+                    background 0.12s ease,
+                    border-color 0.12s ease,
+                    box-shadow 0.12s ease;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                user-select: none;
+                touch-action: manipulation;
+            }
 
-/* Start hearts on page load */
-window.onload = startHearts;
+            .btn:focus-visible {
+                outline: 3px solid var(--focus);
+                outline-offset: 2px;
+            }
 
-/* YES button click */
-function answerYes() {
-  document.getElementById("result").innerHTML = `
-    <p><strong> You're invited! </strong></p>
-    <p>
-    Pick you up 1:30PM Saturday. Maybe wear something cozy and comfy for the cold weather — no need to overdress,
-    just something you’ll feel good in and that’s nice for photos too.
-    Our first stop has a little photo op plus appetizers and cocktails,
-    then we’ll head to a more casual place for the main meal
-    (Mediterranean — hoping it’s a good one 😄).
-    </p>
-  `;
-}
+            .btn:hover {
+                background: rgba(255, 255, 255, 0.12);
+                border-color: rgba(255, 255, 255, 0.22);
+                transform: translateY(-1px);
+            }
 
-/* NO button click */
-function answerNo() {
-  document.getElementById("result").innerHTML = `
-    <p>Oh, I see… maybe next time 💔</p>
-  `;
-}
-</script>
+            .btn:active {
+                transform: translateY(0px) scale(0.99);
+            }
 
-</body>
+            .btn-yes {
+                background: color-mix(in srgb, var(--yes) 70%, rgba(255, 255, 255, 0.12));
+                border-color: color-mix(in srgb, var(--yes) 45%, rgba(255, 255, 255, 0.2));
+            }
+
+            .btn-yes:hover {
+                background: color-mix(in srgb, var(--yesHover) 78%, rgba(255, 255, 255, 0.1));
+                border-color: color-mix(in srgb, var(--yesHover) 55%, rgba(255, 255, 255, 0.2));
+            }
+
+            .btn-no {
+                background: var(--no);
+                border-color: rgba(255, 255, 255, 0.16);
+                position: relative;
+            }
+
+            .btn-no:hover {
+                background: var(--noHover);
+            }
+
+            .reveal {
+                margin-top: 12px;
+                border-top: 1px dashed rgba(255, 255, 255, 0.18);
+                padding-top: 12px;
+                display: none;
+                gap: 10px;
+            }
+
+            .reveal[aria-hidden="false"] {
+                display: grid;
+            }
+
+            .message {
+                color: rgba(255, 255, 255, 0.86);
+                font-size: 16px;
+                line-height: 1.65;
+                white-space: pre-wrap;
+            }
+
+            .continueRow {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .btn-secondary {
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            .tiny {
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.55);
+            }
+
+            /* Floating hearts background */
+            .floaters {
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                overflow: hidden;
+            }
+
+            .floater {
+                position: absolute;
+                left: var(--x);
+                bottom: -40px;
+                width: var(--s);
+                height: var(--s);
+                opacity: var(--o);
+                filter: blur(0.2px);
+                animation: rise var(--d) linear infinite;
+                transform: translate3d(0, 0, 0) rotate(0deg);
+            }
+
+            .floater::before {
+                content: "❤";
+                display: block;
+                width: 100%;
+                height: 100%;
+                font-size: var(--s);
+                line-height: 1;
+                color: rgba(255, 255, 255, 0.22);
+                text-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+            }
+
+            @keyframes rise {
+                0% {
+                    transform: translate3d(0, 0, 0) rotate(0deg);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: var(--o);
+                }
+                100% {
+                    transform: translate3d(0, -120vh, 0) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .floater {
+                    animation: none;
+                    display: none;
+                }
+
+                .btn {
+                    transition: none;
+                }
+            }
+
+            /* Make the No button able to move within the stage */
+            .stageInner {
+                position: relative;
+                padding: 0;
+                margin: 0;
+            }
+
+            .actions {
+                position: relative;
+                min-height: 56px;
+            }
+
+            /* On small screens, stack buttons for bigger tap targets */
+            @media (max-width: 520px) {
+                .actions {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrap">
+            <div class="floaters" aria-hidden="true" id="floaters"></div>
+
+            <main class="card" role="main">
+                <div class="header">
+                    <div class="badge">
+                        <span class="heart" aria-hidden="true"></span>
+                        Valentine Invite
+                    </div>
+                    <div class="tiny" id="stepLabel">Step 1 of 2</div>
+                </div>
+
+                <div class="content">
+                    <div>
+                        <h1 id="title">Quick question...</h1>
+                        <p id="subtitle">Answer honestly. (The “No” button might be a little shy.)</p>
+                    </div>
+
+                    <section class="stage" id="stage" aria-live="polite">
+                        <div class="stageInner">
+                            <p class="question" id="questionText">Will you be my Valentine?</p>
+
+                            <div class="actions" id="actions">
+                                <button class="btn btn-yes" type="button" id="yesBtn">Yes</button>
+                                <button class="btn btn-no" type="button" id="noBtn">No</button>
+                            </div>
+
+                            <div class="reveal" id="reveal" aria-hidden="true">
+                                <div class="message" id="messageText"></div>
+                                <div class="continueRow">
+                                    <button class="btn btn-secondary" type="button" id="continueBtn">
+                                        Continue
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <p class="tiny">
+                        Tip: If you’re hosting on GitHub Pages, name the file <strong>index.html</strong>.
+                    </p>
+                </div>
+            </main>
+        </div>
+
+        <script>
+            // =========================================================
+            // EDIT THESE PLACEHOLDERS 👇
+            // =========================================================
+            const COPY = {
+                step1: {
+                    stepLabel: 'Step 1 of 2',
+                    title: 'Quick question...',
+                    subtitle: 'Answer honestly. (The “No” button might be a little shy.)',
+                    question: 'Will you be my Valentine?',
+                    yesLabel: 'Yes',
+                    noLabel: 'No',
+                    revealedMessage:
+                        "Type your Step 1 message here.\n\nExample:\nDinner Feb 14 at 7 PM?\nI’ll pick you up 💐",
+                    continueLabel: 'Continue',
+                },
+                step2: {
+                    stepLabel: 'Step 2 of 2',
+                    title: 'One more thing...',
+                    subtitle: 'Just making sure you’re cool with the plan.',
+                    question: 'Are you okay with this?',
+                    yesLabel: 'Yes',
+                    noLabel: 'No',
+                    revealedMessage:
+                        "Type your Step 2 message here.\n\nExample:\nPart 2 Valentine’s on Feb 21 ❤️\n(Details: time/place/etc.)",
+                    continueLabel: 'Done',
+                },
+            };
+
+            // =========================================================
+            // Implementation
+            // =========================================================
+            const stage = document.getElementById('stage');
+            const actions = document.getElementById('actions');
+
+            const stepLabel = document.getElementById('stepLabel');
+            const title = document.getElementById('title');
+            const subtitle = document.getElementById('subtitle');
+            const questionText = document.getElementById('questionText');
+
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+
+            const reveal = document.getElementById('reveal');
+            const messageText = document.getElementById('messageText');
+            const continueBtn = document.getElementById('continueBtn');
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            let currentStep = 1;
+            let noIsFloating = false;
+
+            function setCopyForStep(step) {
+                const stepCopy = step === 1 ? COPY.step1 : COPY.step2;
+
+                stepLabel.textContent = stepCopy.stepLabel;
+                title.textContent = stepCopy.title;
+                subtitle.textContent = stepCopy.subtitle;
+                questionText.textContent = stepCopy.question;
+
+                yesBtn.textContent = stepCopy.yesLabel;
+                noBtn.textContent = stepCopy.noLabel;
+
+                messageText.textContent = stepCopy.revealedMessage;
+                continueBtn.textContent = stepCopy.continueLabel;
+
+                // Reset UI state
+                reveal.setAttribute('aria-hidden', 'true');
+                noBtn.style.position = 'relative';
+                noBtn.style.left = '';
+                noBtn.style.top = '';
+                noIsFloating = false;
+            }
+
+            function clamp(value, min, max) {
+                return Math.max(min, Math.min(max, value));
+            }
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            function moveNoButtonSomewhere() {
+                if (prefersReducedMotion) {
+                    return;
+                }
+
+                // Make No position absolute within the actions container, so it can jump around.
+                // We keep it within the visible bounds of the actions area.
+                if (!noIsFloating) {
+                    noIsFloating = true;
+                    noBtn.style.position = 'absolute';
+                }
+
+                const containerRect = actions.getBoundingClientRect();
+                const buttonRect = noBtn.getBoundingClientRect();
+
+                const padding = 6;
+
+                const maxX = Math.max(padding, containerRect.width - buttonRect.width - padding);
+                const maxY = Math.max(padding, containerRect.height - buttonRect.height - padding);
+
+                const x = clamp(randomInRange(padding, maxX), padding, maxX);
+                const y = clamp(randomInRange(padding, maxY), padding, maxY);
+
+                noBtn.style.left = `${x}px`;
+                noBtn.style.top = `${y}px`;
+            }
+
+            function handlePointerMove(event) {
+                if (prefersReducedMotion) {
+                    return;
+                }
+
+                // If the pointer gets "close" to the No button, move it.
+                const buttonRect = noBtn.getBoundingClientRect();
+                const pointerX = event.clientX;
+                const pointerY = event.clientY;
+
+                const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+                const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+
+                const dx = pointerX - buttonCenterX;
+                const dy = pointerY - buttonCenterY;
+
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                // Tune this value if you want it more/less aggressive
+                const dodgeRadius = 90;
+
+                if (distance < dodgeRadius) {
+                    moveNoButtonSomewhere();
+                }
+            }
+
+            function handleNoPress(event) {
+                // Mobile-friendly: if they try to tap the No button, it jumps away.
+                event.preventDefault();
+                event.stopPropagation();
+                moveNoButtonSomewhere();
+            }
+
+            function revealMessage() {
+                reveal.setAttribute('aria-hidden', 'false');
+                // Put focus somewhere sensible after revealing
+                continueBtn.focus({ preventScroll: true });
+            }
+
+            function nextStepOrFinish() {
+                if (currentStep === 1) {
+                    currentStep = 2;
+                    setCopyForStep(2);
+
+                    // Small nudge: pre-position "No" so it's already playful
+                    setTimeout(() => moveNoButtonSomewhere(), 50);
+                    return;
+                }
+
+                // Step 2 done: show a simple ending state
+                title.textContent = 'Yay 💖';
+                subtitle.textContent = 'See you soon.';
+                questionText.textContent = 'Screenshot this if you want, and text me “Yes” 😉';
+                reveal.setAttribute('aria-hidden', 'true');
+
+                yesBtn.disabled = true;
+                noBtn.disabled = true;
+                continueBtn.disabled = true;
+
+                yesBtn.style.opacity = '0.7';
+                noBtn.style.opacity = '0.7';
+                continueBtn.style.opacity = '0.7';
+            }
+
+            // Events
+            yesBtn.addEventListener('click', () => {
+                revealMessage();
+            });
+
+            continueBtn.addEventListener('click', () => {
+                nextStepOrFinish();
+            });
+
+            // Dodge behavior for No
+            document.addEventListener('pointermove', handlePointerMove, { passive: true });
+            noBtn.addEventListener('pointerdown', handleNoPress);
+            noBtn.addEventListener('click', (event) => {
+                // Even if click fires, still dodge
+                event.preventDefault();
+                moveNoButtonSomewhere();
+            });
+
+            // Floating hearts background
+            function seedFloaters() {
+                if (prefersReducedMotion) {
+                    return;
+                }
+
+                const floaters = document.getElementById('floaters');
+                const count = 14;
+
+                for (let i = 0; i < count; i++) {
+                    const floater = document.createElement('div');
+                    floater.className = 'floater';
+
+                    const x = `${Math.round(Math.random() * 100)}%`;
+                    const sizePx = Math.round(randomInRange(14, 26));
+                    const durationSec = randomInRange(10, 18);
+                    const opacity = randomInRange(0.18, 0.38);
+
+                    floater.style.setProperty('--x', x);
+                    floater.style.setProperty('--s', `${sizePx}px`);
+                    floater.style.setProperty('--d', `${durationSec}s`);
+                    floater.style.setProperty('--o', `${opacity}`);
+
+                    floater.style.animationDelay = `${randomInRange(0, durationSec)}s`;
+
+                    floaters.appendChild(floater);
+                }
+            }
+
+            // Init
+            setCopyForStep(1);
+            seedFloaters();
+
+            // Optional: initial playful move
+            setTimeout(() => moveNoButtonSomewhere(), 120);
+        </script>
+    </body>
 </html>
