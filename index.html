@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Invite</title>
+
+<!-- Poppins font for romantic style -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* Full-page romantic background */
+body {
+  margin: 0;
+  padding: 0;
+  background: url('tagaytay.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+/* Semi-transparent romantic overlay */
+.overlay {
+  background: rgba(255, 240, 230, 0.85); /* warm light pinkish */
+  max-width: 650px;
+  margin: 60px auto;
+  padding: 40px 30px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+
+/* Main heading */
+h1 {
+  color: #8B2D2D; /* deep red romantic tone */
+  font-size: 36px;
+  margin-bottom: 30px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+}
+
+/* Buttons */
+.btn {
+  background-color: #8B2D2D;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  margin: 12px;
+  font-size: 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.25s, background-color 0.25s;
+}
+
+.btn:hover {
+  transform: scale(1.08);
+  background-color: #a33b3b;
+}
+
+#buttons {
+  position: relative;
+  height: 120px;
+}
+
+#result {
+  margin-top: 35px;
+  font-size: 20px;
+  color: #8B2D2D;
+  line-height: 1.6;
+}
+
+/* Floating red hearts */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 22px;
+  color: #FF4B5C;
+  animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+  to {
+    transform: translateY(-110vh);
+    opacity: 0;
+  }
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 500px) {
+  .overlay {
+    width: 90%;
+    padding: 25px 15px;
+  }
+  h1 {
+    font-size: 28px;
+  }
+  .btn {
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="overlay">
+  <h1>Are you free on February 14th?</h1>
+
+  <div id="buttons">
+    <button class="btn" onclick="answerYes()">YES</button>
+    <button class="btn" onclick="answerNo()">NO</button>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<script>
+/* Floating hearts animation */
+function startHearts() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+    heart.style.fontSize = (18 + Math.random() * 18) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }, 300);
+}
+
+/* YES button click */
+function answerYes() {
+  document.getElementById("result").innerHTML = `
+    <p><strong>Wonderful! 💖✨</strong></p>
+    <p>
+    Maybe wear something cozy and comfy for the cold weather — no need to overdress,
+    just something you’ll feel good in and that’s nice for photos too.
+    Our first stop is a nice location for a little photo op plus appetizers and cocktails,
+    then we’ll head to a more simple and casual place for the main meal
+    (Mediterranean — hoping it’s a good one 😄).
+    </p>
+  `;
+  startHearts();
+}
+
+/* NO button click */
+function answerNo() {
+  document.getElementById("result").innerHTML = `
+    <p>Oh, I see… maybe next time 💔</p>
+  `;
+}
+</script>
+
+</body>
+</html>
